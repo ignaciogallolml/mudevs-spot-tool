@@ -10,7 +10,7 @@ Una herramienta web moderna, rápida y minimalista diseñada para administradore
 
 ## 📸 Vista Previa
 
-![Preview de la Herramienta](https://via.placeholder.com/800x450/020617/indigo?text=MU+Spot+Editor+Preview)
+![Preview de la Herramienta](https://i.gyazo.com/aba54dd29bbae70097fff9c3bb8885b7.png)
 
 ---
 
@@ -50,4 +50,5 @@ Este proyecto está bajo la licencia MIT. Eres libre de usarlo, modificarlo y di
 ---
 <p align="center">
   Hecho con ❤️ para la comunidad de MU Online
+
 </p>
