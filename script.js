@@ -1,11 +1,11 @@
 let monsterData = [];
 let mapID = "0";
+let isMapUploaded = false; 
 let spotsList = [];
 
 const monsterInput = document.getElementById('monsterFile');
 const mapInput = document.getElementById('mapFile');
 const btnContinue = document.getElementById('btn-continue');
-const btnText = document.getElementById('btn-text'); // Ahora coincide con el ID del HTML
 const monsterSelect = document.getElementById('monsterSelect');
 
 // NOTIFICACIONES
@@ -20,20 +20,33 @@ function showToast(message, type = 'success') {
     setTimeout(() => toast.remove(), 3000);
 }
 
-// VALIDACIÓN DE ARCHIVOS (Lo que pediste)
+// VALIDACIÓN DE ARCHIVOS
 function checkFiles() {
-    const hasMonster = monsterData.length > 0;
-    const hasMap = mapID !== "0";
+    const btnText = document.querySelector('.continue-text');
+    const btnInnerCircle = document.getElementById('btn-inner-circle');
 
-    if (hasMonster && hasMap) {
+    if (monsterData.length > 0 && isMapUploaded) {
         btnContinue.disabled = false;
-        btnText.innerText = "CONTINUAR";
-    } else if (hasMonster || hasMap) {
-        btnContinue.disabled = true;
-        btnText.innerText = "FALTA UN ARCHIVO...";
+        btnText.innerText = "Continuar";
+        
+        btnContinue.classList.remove('bg-slate-600', 'cursor-not-allowed');
+        btnContinue.classList.add('bg-[#256176]', 'cursor-pointer');
+        
+        if (btnInnerCircle) {
+            btnInnerCircle.classList.remove('bg-slate-500');
+            btnInnerCircle.classList.add('bg-[#25aaaa]', 'group-hover:w-[calc(100%-8px)]');
+        }
     } else {
         btnContinue.disabled = true;
-        btnText.innerText = "SUBE LOS ARCHIVOS PRIMERO";
+        btnText.innerText = "Sube los archivos";
+        
+        btnContinue.classList.remove('bg-[#256176]', 'cursor-pointer');
+        btnContinue.classList.add('bg-slate-600', 'cursor-not-allowed');
+        
+        if (btnInnerCircle) {
+            btnInnerCircle.classList.remove('bg-[#25aaaa]', 'group-hover:w-[calc(100%-8px)]');
+            btnInnerCircle.classList.add('bg-slate-500');
+        }
     }
 }
 
@@ -46,6 +59,38 @@ function updateUploadStatus(type, labelText) {
     card.classList.add('border-emerald-500/50', 'bg-emerald-500/5');
     icon.innerHTML = `<svg class="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>`;
     msg.innerHTML = `<span class="text-emerald-400 font-bold">${labelText}</span>`;
+}
+
+// REINICIAR LA APP
+function resetApp() {
+    // 1. Limpiar variables
+    monsterData = [];
+    mapID = "0";
+    isMapUploaded = false;
+    spotsList = [];
+    
+    // 2. Limpiar inputs de archivo (permite subir los mismos archivos de nuevo)
+    monsterInput.value = "";
+    mapInput.value = "";
+    monsterSelect.innerHTML = "";
+    
+    // 3. Restaurar aspecto de la card Monster
+    document.getElementById('card-monster').classList.remove('border-emerald-500/50', 'bg-emerald-500/5');
+    document.getElementById('icon-monster').innerHTML = `<svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`;
+    document.getElementById('msg-monster').innerHTML = `Definiciones de mobs`;
+
+    // 4. Restaurar aspecto de la card Map
+    document.getElementById('card-map').classList.remove('border-emerald-500/50', 'bg-emerald-500/5');
+    document.getElementById('icon-map').innerHTML = `<svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>`;
+    document.getElementById('msg-map').innerHTML = `Ej: 000 - Lorencia.xml`;
+
+    // 5. Refrescar listas y botón
+    renderSpots();
+    checkFiles();
+    
+    // 6. Volver a la pantalla inicial
+    document.getElementById('editor-screen').classList.add('hidden');
+    document.getElementById('upload-screen').classList.remove('hidden');
 }
 
 // EVENTOS DE CARGA
@@ -74,8 +119,11 @@ monsterInput.addEventListener('change', function(e) {
 mapInput.addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (!file) return;
+    
     const match = file.name.match(/\d+/);
-    mapID = match ? match[0] : "0";
+    mapID = match ? parseInt(match[0], 10).toString() : "0";
+    isMapUploaded = true;
+    
     updateUploadStatus('map', `Mapa ${mapID} Vinculado`);
     checkFiles();
 });
