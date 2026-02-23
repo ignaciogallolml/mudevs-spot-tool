@@ -1,0 +1,49 @@
+/* --- RESET & INPUTS --- */
+.input-editor {
+    @apply w-full bg-slate-950 border border-slate-800 text-slate-200 rounded-xl p-2.5 text-sm outline-none transition-all focus:border-indigo-500 text-center;
+}
+
+/* --- CARDS DE CARGA CREATIVAS --- */
+.creative-upload {
+    @apply relative overflow-hidden p-12 rounded-[2.5rem] bg-slate-900/40 border border-slate-800 cursor-pointer transition-all duration-500 flex flex-col items-center justify-center backdrop-blur-md shadow-xl;
+}
+
+.creative-bg {
+    @apply absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.15)_0%,transparent_70%)];
+}
+
+.icon-box {
+    @apply p-6 bg-slate-950 rounded-3xl mb-6 text-slate-500 border border-slate-800 transition-all duration-500 group-hover:-translate-y-2 group-hover:border-indigo-500 group-hover:text-indigo-400 group-hover:shadow-[0_0_30px_rgba(99,102,241,0.2)];
+}
+
+/* --- BOTÓN CONTINUAR PREMIUM --- */
+.special-btn {
+    @apply w-full py-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-600 font-black text-sm tracking-[0.3em] transition-all duration-500;
+}
+
+.special-btn:disabled {
+    @apply opacity-50 cursor-not-allowed grayscale;
+}
+
+.special-btn:enabled {
+    @apply border-indigo-500/50 text-white shadow-[0_0_40px_rgba(99,102,241,0.2)] bg-indigo-600/10 hover:bg-indigo-600/20;
+}
+
+/* --- BOTONES DE COPIAR --- */
+.modern-copy-btn {
+    @apply flex items-center px-6 py-2 rounded-full font-black text-[10px] tracking-widest transition-all duration-300 border;
+}
+.modern-copy-btn.indigo { @apply bg-indigo-500/10 text-indigo-400 border-indigo-500/20 hover:bg-indigo-500 hover:text-white; }
+.modern-copy-btn.sky { @apply bg-sky-500/10 text-sky-400 border-sky-500/20 hover:bg-sky-500 hover:text-white; }
+
+.modern-copy-btn.copied {
+    @apply bg-emerald-500 border-emerald-500 text-white scale-95;
+}
+
+/* --- CONTENEDORES --- */
+.code-card { @apply bg-[#030712]/80 border border-slate-800 p-6 rounded-[2rem] backdrop-blur-sm; }
+.code-container { @apply bg-black/40 rounded-2xl p-4 mt-2 overflow-x-auto min-h-[140px] border border-white/5; }
+
+/* Animación scale */
+@keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.animate-in { animation: scaleIn 0.4s ease-out forwards; }
